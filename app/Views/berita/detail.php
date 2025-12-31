@@ -14,8 +14,14 @@
                         <div class="card-body">
                             <h5 class="card-title"><?= $berita['title'] ?></h5>
                             <p class="card-text"><small class="text-body-secondary"><?= $berita['body'] ?></small></p>
-                            <a href="" class="btn btn-warning">Edit</a>
-                            <a href="" class="btn btn-danger">Delete</a>
+
+                            <a href="/berita/edit/<?= $berita['slug'] ?>" class="btn btn-warning">Edit</a>
+
+                            <form action="/berita/<?= $berita['id'] ?>" method="post" class="d-inline">
+                                <?= csrf_field(); ?>
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus berita ini?');">Delete</button>
+                            </form>
 
                             <br></br>
                             <a href="/berita">Kembali ke daftar berita</a>

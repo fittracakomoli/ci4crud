@@ -71,4 +71,46 @@ class BeritaController extends BaseController
 
         return redirect()->to('/berita');
     }
+
+    public function delete($id)
+    {
+        $this->beritaModel->delete($id);
+        session()->setFlashdata('pesan', 'Data berhasil dihapus.');
+        return redirect()->to('/berita');
+    }
+
+    public function edit($slug)
+    {
+        $data = [
+            'title' => 'Form Edit Berita',
+            'validation' => \Config\Services::validation(),
+            'berita' => $this->beritaModel->getBerita($slug)
+        ];
+
+        return view('berita/edit', $data);
+    }
+
+    public function update($id)
+    {
+        if (!$this->validate([
+            'title' => 'required',
+            'body' => 'required',
+            'thumbnail' => 'required'
+        ])) {
+            $validation = \Config\Services::validation();
+            return redirect()->to('/berita/edit/' . $this->request->getVar('slug'))->withInput()->with('validation', $validation);
+        }
+
+        $this->beritaModel->save([
+            'id' => $id,
+            'title' => $this->request->getVar('title'),
+            'slug' => url_title($this->request->getVar('title'), '-', true),
+            'thumbnail' => $this->request->getVar('thumbnail'),
+            'body' => $this->request->getVar('body')
+        ]);
+
+        session()->setFlashdata('pesan', 'Data berhasil diupdate.');
+
+        return redirect()->to('/berita');
+    }
 }
