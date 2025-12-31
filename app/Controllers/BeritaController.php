@@ -42,7 +42,8 @@ class BeritaController extends BaseController
     public function create()
     {
         $data = [
-            'title' => 'Form Tambah Berita'
+            'title' => 'Form Tambah Berita',
+            'validation' => \Config\Services::validation()
         ];
 
         return view('berita/create', $data);
@@ -50,6 +51,15 @@ class BeritaController extends BaseController
 
     public function save()
     {
+        if (!$this->validate([
+            'title' => 'required',
+            'body' => 'required',
+            'thumbnail' => 'required'
+        ])) {
+            $validation = \Config\Services::validation();
+            return redirect()->to('/berita/create')->withInput()->with('validation', $validation);
+        }
+
         $this->beritaModel->save([
             'title' => $this->request->getVar('title'),
             'slug' => url_title($this->request->getVar('title'), '-', true),
