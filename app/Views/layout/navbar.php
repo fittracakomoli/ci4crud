@@ -14,13 +14,7 @@
                     <a class="nav-link active" aria-current="page" href="/">Beranda</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about">Tentang</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/contact">Kontak</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/komik">Komik</a>
+                    <a class="nav-link" href="/berita">Berita</a>
                 </li>
             </ul>
         </div>
