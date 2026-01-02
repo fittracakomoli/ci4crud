@@ -20,3 +20,5 @@ $routes->post('/berita/update/(:num)', 'BeritaController::update/$1');
 $routes->delete('/berita/(:num)', 'BeritaController::delete/$1');
 
 $routes->get('/berita/(:any)', 'BeritaController::detail/$1');
+
+$routes->get('/orang', 'OrangController::index');
