@@ -70,6 +70,36 @@ class OrangSeeder extends Seeder
                 'created_at' => Time::now(),
                 'updated_at' => Time::now(),
             ],
+            [
+                'nama'    => 'Tono Susilo',
+                'alamat'  => 'Jl. Merpati No. 14, Kupang',
+                'created_at' => Time::now(),
+                'updated_at' => Time::now(),
+            ],
+            [
+                'nama'    => 'Sari Wulandari',
+                'alamat'  => 'Jl. Kenanga No. 9, Manado',
+                'created_at' => Time::now(),
+                'updated_at' => Time::now(),
+            ],
+            [
+                'nama'    => 'Bambang Setiawan',
+                'alamat'  => 'Jl. Flamboyan No. 11, Solo',
+                'created_at' => Time::now(),
+                'updated_at' => Time::now(),
+            ],
+            [
+                'nama'    => 'Nina Kartika',
+                'alamat'  => 'Jl. Melati No. 7, Pekanbaru',
+                'created_at' => Time::now(),
+                'updated_at' => Time::now(),
+            ],
+            [
+                'nama'    => 'Eko Prasetyo',
+                'alamat'  => 'Jl. Anggrek No. 4, Banjarmasin',
+                'created_at' => Time::now(),
+                'updated_at' => Time::now(),
+            ],
         ];
 
         // Simple Queries

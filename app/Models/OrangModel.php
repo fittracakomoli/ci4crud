@@ -10,4 +10,9 @@ class OrangModel extends Model
     protected $useTimestamps = true;
 
     protected $allowedFields = ['nama', 'alamat'];
+
+    public function search($keyword)
+    {
+        return $this->table('orang')->like('nama', $keyword)->orLike('alamat', $keyword);
+    }
 }

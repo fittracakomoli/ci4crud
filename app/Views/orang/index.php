@@ -4,7 +4,17 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h1>Daftar Orang</h1>
+            <h1 class="mt-4">Daftar Orang</h1>
+            <form action="" method="post">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Masukkan keyword pencarian" name="keyword">
+                    <button class="btn btn-outline-secondary" type="submit" name="submit">Cari</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <table class="table mt-4">
                 <thead>
                     <tr>
@@ -15,7 +25,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $i = 1; ?>
+                    <?php $i = 1 + (5 * ($current_page - 1)); ?>
                     <?php foreach ($orang as $o) : ?>
                         <tr>
                             <th scope="row"><?= $i++; ?></th>
