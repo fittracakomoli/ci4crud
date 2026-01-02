@@ -43,7 +43,7 @@ class BeritaController extends BaseController
     {
         $data = [
             'title' => 'Form Tambah Berita',
-            'validation' => \Config\Services::validation()
+            'errors' => session('errors'),
         ];
 
         return view('berita/create', $data);
@@ -52,18 +52,44 @@ class BeritaController extends BaseController
     public function save()
     {
         if (!$this->validate([
-            'title' => 'required',
-            'body' => 'required',
-            'thumbnail' => 'required'
+            'title' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} berita harus diisi.'
+                ]
+            ],
+            'body' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} berita harus diisi.'
+                ]
+            ],
+            'thumbnail' => [
+                'rules' => 'max_size[thumbnail,1024]|is_image[thumbnail]|mime_in[thumbnail,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'max_size' => 'Ukuran gambar terlalu besar.',
+                    'is_image' => 'File yang dipilih bukan gambar.',
+                    'mime_in' => 'File yang dipilih bukan gambar.'
+                ]
+            ]
         ])) {
-            $validation = \Config\Services::validation();
-            return redirect()->to('/berita/create')->withInput()->with('validation', $validation);
+            // $validation = \Config\Services::validation();
+            // return redirect()->to('/berita/create')->withInput()->with('validation', $validation);
+            return redirect()->to('/berita/create')->with('errors', $this->validator->getErrors());
+        }
+
+        $filethumbnail = $this->request->getFile('thumbnail');
+        if ($filethumbnail->getError() == 4) {
+            $thumbnailName = 'default.png';
+        } else {
+            $thumbnailName = $filethumbnail->getRandomName();
+            $filethumbnail->move('img', $thumbnailName);
         }
 
         $this->beritaModel->save([
             'title' => $this->request->getVar('title'),
             'slug' => url_title($this->request->getVar('title'), '-', true),
-            'thumbnail' => $this->request->getVar('thumbnail'),
+            'thumbnail' => $thumbnailName,
             'body' => $this->request->getVar('body')
         ]);
 
@@ -74,6 +100,12 @@ class BeritaController extends BaseController
 
     public function delete($id)
     {
+        $berita = $this->beritaModel->find($id);
+
+        if ($berita['thumbnail'] != 'default.png') {
+            unlink('img/' . $berita['thumbnail']);
+        }
+
         $this->beritaModel->delete($id);
         session()->setFlashdata('pesan', 'Data berhasil dihapus.');
         return redirect()->to('/berita');
@@ -83,7 +115,7 @@ class BeritaController extends BaseController
     {
         $data = [
             'title' => 'Form Edit Berita',
-            'validation' => \Config\Services::validation(),
+            'errors' => session('errors'),
             'berita' => $this->beritaModel->getBerita($slug)
         ];
 
@@ -93,19 +125,48 @@ class BeritaController extends BaseController
     public function update($id)
     {
         if (!$this->validate([
-            'title' => 'required',
-            'body' => 'required',
-            'thumbnail' => 'required'
+            'title' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} berita harus diisi.'
+                ]
+            ],
+            'body' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} berita harus diisi.'
+                ]
+            ],
+            'thumbnail' => [
+                'rules' => 'max_size[thumbnail,1024]|is_image[thumbnail]|mime_in[thumbnail,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'max_size' => 'Ukuran gambar terlalu besar.',
+                    'is_image' => 'File yang dipilih bukan gambar.',
+                    'mime_in' => 'File yang dipilih bukan gambar.'
+                ]
+            ]
         ])) {
-            $validation = \Config\Services::validation();
-            return redirect()->to('/berita/edit/' . $this->request->getVar('slug'))->withInput()->with('validation', $validation);
+            // $validation = \Config\Services::validation();
+            // return redirect()->to('/berita/create')->withInput()->with('validation', $validation);
+            return redirect()->to('/berita/edit/' . $this->request->getVar('slug'))->with('errors', $this->validator->getErrors());
+        }
+
+        $filethumbnail = $this->request->getFile('thumbnail');
+        if ($filethumbnail->getError() == 4) {
+            $thumbnailName = $this->request->getVar('thumbnailLama');
+        } else {
+            $thumbnailName = $filethumbnail->getRandomName();
+            $filethumbnail->move('img', $thumbnailName);
+            if ($this->request->getVar('thumbnailLama') != 'default.png') {
+                unlink('img/' . $this->request->getVar('thumbnailLama'));
+            }
         }
 
         $this->beritaModel->save([
             'id' => $id,
             'title' => $this->request->getVar('title'),
             'slug' => url_title($this->request->getVar('title'), '-', true),
-            'thumbnail' => $this->request->getVar('thumbnail'),
+            'thumbnail' => $thumbnailName,
             'body' => $this->request->getVar('body')
         ]);
 

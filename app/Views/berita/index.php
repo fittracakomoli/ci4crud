@@ -25,7 +25,7 @@
                     <?php foreach ($berita as $b) : ?>
                         <tr>
                             <th scope="row"><?= $i++; ?></th>
-                            <td><img src="/img/<?= $b['thumbnail'] ?>" alt="<?= $b['slug'] ?>" class="thumbnail"></td>
+                            <td><img src="/img/<?= $b['thumbnail'] ?>" alt="<?= $b['slug'] ?>" class="thumbnail w-100"></td>
                             <td><?= $b['title'] ?></td>
                             <td>
                                 <a href="/berita/<?= $b['slug'] ?>" class="btn btn-success">Detail</a>

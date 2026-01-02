@@ -9,23 +9,26 @@
                 <?= csrf_field(); ?>
                 <div class="mb-3">
                     <label for="title" class="form-label">Judul Berita</label>
-                    <input type="text" class="form-control <?= ($validation->hasError('title')) ? 'is-invalid' : ''; ?>" id="title" name="title" autofocus value="<?= old('title') ?>">
+                    <input type="text" class="form-control <?= isset($errors['title']) ? 'is-invalid' : ''; ?>" id="title" name="title" autofocus value="<?= old('title') ?>">
                     <div class="invalid-feedback">
-                        <?= $validation->getError('title'); ?>
+                        <?= $errors['title'] ?? ''; ?>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="body" class="form-label">Isi Berita</label>
-                    <textarea class="form-control <?= ($validation->hasError('body')) ? 'is-invalid' : ''; ?>" id="body" name="body" rows="5"><?= old('body') ?></textarea>
+                    <textarea class="form-control <?= isset($errors['body']) ? 'is-invalid' : ''; ?>" id="body" name="body" rows="5"><?= old('body') ?></textarea>
                     <div class="invalid-feedback">
-                        <?= $validation->getError('body'); ?>
+                        <?= $errors['body'] ?? ''; ?>
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="thumbnail" class="form-label">Thumbnail</label>
-                    <input class="form-control <?= ($validation->hasError('thumbnail')) ? 'is-invalid' : ''; ?>" type="text" id="thumbnail" name="thumbnail" value="<?= old('thumbnail') ?>">
+                    <label for="thumbnail" class="form-label">Thumbnail Berita</label>
+                    <div class="w-full mb-3">
+                        <img src="/img/default.png" class="img-thumbnail mb-2 img-preview" alt="">
+                    </div>
+                    <input class="form-control <?= isset($errors['thumbnail']) ? 'is-invalid' : ''; ?>" type="file" id="thumbnail" name="thumbnail" onchange="previewImg()">
                     <div class="invalid-feedback">
-                        <?= $validation->getError('thumbnail'); ?>
+                        <?= $errors['thumbnail'] ?? ''; ?>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Simpan Berita</button>
